@@ -1,0 +1,34 @@
+import pymysql
+
+conn = None
+cursor = None
+
+try:
+    # 1.建立连接
+    conn = pymysql.connect(
+        host='localhost',
+        port=3306,
+        user='root',
+        passwd='Wuwenhao@2026',
+        database='paper_wedding_dress',
+        charset='utf8mb4'
+    )
+    #2.创建字典游标
+    cursor = conn.cursor()
+    #3.编写语句
+    sql = "update zhi_jia_yi_characters set name = replace(name, '0', '') where name like '0%';"
+    #4.执行
+    cursor.execute(sql)
+    #5.提交事务
+    conn.commit()
+    print("修复成功")
+# 6.异常处理
+except Exception as e:
+    print(f"发生了错误喵~,错误代码:{e}")
+    if conn:
+        conn.rollback()
+#安全关闭
+finally:
+    cursor.close()
+    conn.close()
+    print("再见了喵~")
